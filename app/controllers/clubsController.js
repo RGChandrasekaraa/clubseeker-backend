@@ -11,8 +11,20 @@ exports.createClub = async (req, res) => {
 };
 
 exports.getAllClubs = async (req, res) => {
+  // detect query params such as location, university, category
+  const { location, university, category } = req.query;
   try {
-    const clubs = await Club.find();
+    let conditions = {};
+    if (location) {
+      conditions.club_location = location;
+    }
+    if (university) {
+      conditions.club_university = university;
+    }
+    if (category) {
+      conditions.club_category = category;
+    }
+    const clubs = await Club.find(conditions);
     res.status(200).json(clubs);
   } catch (error) {
     res.status(500).json({ message: error.message });
