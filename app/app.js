@@ -1,6 +1,7 @@
 const express = require("express");
 const userRoutes = require("./routes/userRoutes");
 const clubRoutes = require("./routes/clubRoutes");
+const authRoutes = require("./routes/authRoutes");
 const jwtUtils = require("./utils/jwt");
 
 const app = express();
@@ -13,7 +14,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
+app.use("/api", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/clubs", clubRoutes);
 app.get("/genToken", (req, res) => {
