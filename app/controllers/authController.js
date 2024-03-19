@@ -27,9 +27,11 @@ exports.loginUser = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
     const token = await jwt.generateToken(user);
-    res
-      .status(200)
-      .json({ token: token, message: "User logged in successfully" });
+    res.status(200).json({
+      token: token,
+      message: "User logged in successfully",
+      user_display_name: user.user_firstname,
+    });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
