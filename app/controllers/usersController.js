@@ -1,4 +1,3 @@
-const User = require("../models/userModel");
 const userCrud = require("../crud/userCrud");
 
 exports.createUser = async (req, res) => {
