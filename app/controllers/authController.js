@@ -1,12 +1,16 @@
 const User = require("../models/userModel");
-const bcrypt = require("bcrypt");
-const jwt = require("../utils/jwt");
+const bcrypt = require("../utils/passwordHandler");
+const jwt = require("../utils/tokenHandler");
 
 exports.registerUser = async (req, res) => {
   try {
     let password = req.body.user_password;
-    password = await bcrypt.hash(password, 8);
+    password = await bcrypt.hashPassword(password);
     req.body.user_password = password;
+    const record = await User.findOne({ user_email: req.body.user_email });
+    if (record) {
+      return res.status(400).json({ message: "User already exists" });
+    }
     const user = new User(req.body);
     await user.save();
     res.status(201).json({ message: "User registered successfully" });
@@ -22,7 +26,10 @@ exports.loginUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    const isMatch = await bcrypt.compare(user_password, user.user_password);
+    const isMatch = await bcrypt.comparePassword(
+      user_password,
+      user.user_password
+    );
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
