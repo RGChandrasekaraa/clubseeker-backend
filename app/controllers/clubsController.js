@@ -1,9 +1,8 @@
-const Club = require("../models/clubModel");
+const clubCrud = require("../crud/clubCrud");
 
 exports.createClub = async (req, res) => {
   try {
-    const newClub = new Club(req.body);
-    await newClub.save();
+    const newClub = await clubCrud.createClub(req.body);
     res.status(201).json(newClub);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -24,7 +23,7 @@ exports.getAllClubs = async (req, res) => {
     if (category) {
       conditions.club_category = category;
     }
-    const clubs = await Club.find(conditions);
+    const clubs = await clubCrud.findClubs(conditions);
     res.status(200).json(clubs);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -33,7 +32,7 @@ exports.getAllClubs = async (req, res) => {
 
 exports.getClubById = async (req, res) => {
   try {
-    const club = await Club.findById(req.params.clubId);
+    const club = await clubCrud.findClub({ _id: req.params.clubId });
     if (!club) {
       return res.status(404).json({ message: "Club not found" });
     }
@@ -45,10 +44,9 @@ exports.getClubById = async (req, res) => {
 
 exports.updateClub = async (req, res) => {
   try {
-    const updatedClub = await Club.findByIdAndUpdate(
-      req.params.clubId,
-      req.body,
-      { new: true }
+    const updatedClub = await clubCrud.updateClub(
+      { _id: req.params.clubId },
+      req.body
     );
     if (!updatedClub) {
       return res.status(404).json({ message: "Club not found" });
@@ -61,7 +59,7 @@ exports.updateClub = async (req, res) => {
 
 exports.deleteClub = async (req, res) => {
   try {
-    const club = await Club.findByIdAndDelete(req.params.clubId);
+    const club = await clubCrud.deleteClub({ _id: req.params.clubId });
     if (!club) {
       return res.status(404).json({ message: "Club not found" });
     }

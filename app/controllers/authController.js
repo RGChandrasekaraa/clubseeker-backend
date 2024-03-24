@@ -1,18 +1,17 @@
-const User = require("../models/userModel");
 const bcrypt = require("../utils/passwordHandler");
 const jwt = require("../utils/tokenHandler");
+const userCrud = require("../crud/userCrud");
 
 exports.registerUser = async (req, res) => {
   try {
     let password = req.body.user_password;
     password = await bcrypt.hashPassword(password);
     req.body.user_password = password;
-    const record = await User.findOne({ user_email: req.body.user_email });
+    const record = await userCrud.findUser({ user_email: req.body.user_email });
     if (record) {
       return res.status(400).json({ message: "User already exists" });
     }
-    const user = new User(req.body);
-    await user.save();
+    const user = await userCrud.createUser(req.body);
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -22,7 +21,7 @@ exports.registerUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
   try {
     const { user_email, user_password } = req.body;
-    const user = await User.findOne({ user_email: user_email });
+    const user = await userCrud.findUser({ user_email: user_email });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }

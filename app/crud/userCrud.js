@@ -1,5 +1,6 @@
 const dbHandler = require("../utils/dbHandler");
 const User = require("../models/userModel");
+const Club = require("../models/clubModel");
 
 const createUser = async (user) => {
   try {
@@ -46,4 +47,20 @@ const deleteUser = async (query) => {
   }
 };
 
-module.exports = { createUser, findUser, findUsers, updateUser, deleteUser };
+const findClubs = async (query) => {
+  try {
+    const records = await dbHandler.findRecords(Club, query);
+    return records;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+module.exports = {
+  createUser,
+  findUser,
+  findUsers,
+  updateUser,
+  deleteUser,
+  findClubs,
+};

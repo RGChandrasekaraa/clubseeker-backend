@@ -1,9 +1,9 @@
 const User = require("../models/userModel");
+const userCrud = require("../crud/userCrud");
 
 exports.createUser = async (req, res) => {
   try {
-    const newUser = new User(req.body);
-    await newUser.save();
+    const newUser = await userCrud.createUser(req.body);
     res.status(201).json(newUser);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -12,7 +12,7 @@ exports.createUser = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await userCrud.findUsers({});
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -21,7 +21,7 @@ exports.getAllUsers = async (req, res) => {
 
 exports.getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.userId);
+    const user = await userCrud.findUser({ _id: req.params.userId });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -33,10 +33,9 @@ exports.getUserById = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
-    const updatedUser = await User.findByIdAndUpdate(
-      req.params.userId,
-      req.body,
-      { new: true }
+    const updatedUser = await userCrud.updateUser(
+      { _id: req.params.userId },
+      req.body
     );
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
@@ -49,7 +48,7 @@ exports.updateUser = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.userId);
+    const user = await userCrud.deleteUser({ _id: req.params.userId });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -61,7 +60,7 @@ exports.deleteUser = async (req, res) => {
 
 exports.getUserClubs = async (req, res) => {
   try {
-    const userClubs = await Club.find({ owner: req.params.userId });
+    const userClubs = await userCrud.findClubs({ owner: req.params.userId });
     res.status(200).json(userClubs);
   } catch (error) {
     res.status(500).json({ message: error.message });
