@@ -3,57 +3,27 @@ const User = require("../models/userModel");
 const Club = require("../models/clubModel");
 
 const createUser = async (user) => {
-  try {
-    const record = await dbHandler.createRecord(User, user);
-    return record;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+  return await dbHandler.createRecord(User, user);
 };
 
 const findUser = async (query) => {
-  try {
-    const record = await dbHandler.findRecord(User, query);
-    return record;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+  return await dbHandler.findRecord(User, query);
 };
 
 const findUsers = async (query) => {
-  try {
-    const records = await dbHandler.findRecords(User, query);
-    return records;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+  return await dbHandler.findRecords(User, query);
 };
 
 const updateUser = async (query, data) => {
-  try {
-    const record = await dbHandler.updateRecord(User, query, data);
-    return record;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+  return await dbHandler.updateRecord(User, query, data);
 };
 
 const deleteUser = async (query) => {
-  try {
-    const record = await dbHandler.deleteRecord(User, query);
-    return record;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+  return await dbHandler.deleteRecord(User, query);
 };
 
 const findClubs = async (query) => {
-  try {
-    const records = await dbHandler.findRecords(Club, query);
-    return records;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+  return await dbHandler.findRecords(Club, query);
 };
 
 module.exports = {

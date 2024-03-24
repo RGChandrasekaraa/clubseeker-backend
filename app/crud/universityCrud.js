@@ -2,48 +2,23 @@ const dbHandler = require("../utils/dbHandler");
 const University = require("../models/universityModel");
 
 const createUniversity = async (university) => {
-  try {
-    const record = await dbHandler.createRecord(University, university);
-    return record;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+  return await dbHandler.createRecord(University, university);
 };
 
 const findUniversity = async (query) => {
-  try {
-    const record = await dbHandler.findRecord(University, query);
-    return record;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+  return await dbHandler.findRecord(University, query);
 };
 
 const findUniversities = async (query) => {
-  try {
-    const records = await dbHandler.findRecords(University, query);
-    return records;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+  return await dbHandler.findRecords(University, query);
 };
 
 const updateUniversity = async (query, data) => {
-  try {
-    const record = await dbHandler.updateRecord(University, query, data);
-    return record;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+  return await dbHandler.updateRecord(University, query, data);
 };
 
 const deleteUniversity = async (query) => {
-  try {
-    const record = await dbHandler.deleteRecord(University, query);
-    return record;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+  return await dbHandler.deleteRecord(University, query);
 };
 
 module.exports = {

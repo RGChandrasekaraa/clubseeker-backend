@@ -2,43 +2,19 @@ const dbHandler = require("../utils/dbHandler");
 const Club = require("../models/clubModel");
 
 const createClub = async (club) => {
-  try {
-    const record = await dbHandler.createRecord(Club, club);
-    return record;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+  return await dbHandler.createRecord(Club, club);
 };
 const findClub = async (query) => {
-  try {
-    const record = await dbHandler.findRecord(Club, query);
-    return record;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+  return await dbHandler.findRecord(Club, query);
 };
 const findClubs = async (query) => {
-  try {
-    const records = await dbHandler.findRecords(Club, query);
-    return records;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+  return await dbHandler.findRecords(Club, query);
 };
 const updateClub = async (query, data) => {
-  try {
-    const record = await dbHandler.updateRecord(Club, query, data);
-    return record;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+  return await dbHandler.updateRecord(Club, query, data);
 };
 const deleteClub = async (query) => {
-  try {
-    const record = await dbHandler.deleteRecord(Club, query);
-    return record;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+  return await dbHandler.deleteRecord(Club, query);
 };
+
 module.exports = { createClub, findClub, findClubs, updateClub, deleteClub };
